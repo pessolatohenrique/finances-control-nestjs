@@ -12,4 +12,8 @@ export class EarningRepository {
   getAll() {
     return this.earnings;
   }
+
+  verifyNameExists(name: string) {
+    return this.earnings.some((earning) => earning.name === name);
+  }
 }
