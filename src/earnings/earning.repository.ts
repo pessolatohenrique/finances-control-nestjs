@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { CreateEarningDto } from './earning.dto';
+import { EarningEntity } from './earning.entity';
 
 @Injectable()
 export class EarningRepository {
-  private earnings: Array<CreateEarningDto> = [];
+  private earnings: Array<EarningEntity> = [];
 
-  insert(data: CreateEarningDto) {
+  insert(data: EarningEntity) {
     this.earnings.push(data);
   }
 
