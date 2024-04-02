@@ -37,4 +37,16 @@ export class EarningRepository {
 
     return result;
   }
+
+  delete(id: string): void {
+    const result = this.earnings.find((item) => item.id === id);
+
+    if (!result) {
+      throw Error('result not found');
+    }
+
+    const resultFilter = this.earnings.filter((item) => item.id !== id);
+
+    this.earnings = resultFilter;
+  }
 }

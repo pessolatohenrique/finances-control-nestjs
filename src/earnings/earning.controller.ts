@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { EarningRepository } from './earning.repository';
 import { CreateEarningDto, UpdateEarningDto } from './earning.dto';
 import { EarningEntity } from './earning.entity';
@@ -22,5 +30,10 @@ export class EarningController {
   @Put('/:id')
   update(@Param('id') id: string, @Body() dto: UpdateEarningDto) {
     return this.repository.update(id, dto);
+  }
+
+  @Delete('/:id')
+  delete(@Param('id') id: string) {
+    return this.repository.delete(id);
   }
 }
