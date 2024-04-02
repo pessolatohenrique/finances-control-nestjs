@@ -1,6 +1,6 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 import { EarningRepository } from './earning.repository';
-import { CreateEarningDto } from './earning.dto';
+import { CreateEarningDto, UpdateEarningDto } from './earning.dto';
 import { EarningEntity } from './earning.entity';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -17,5 +17,10 @@ export class EarningController {
     const entity: EarningEntity = { ...dto, id: uuidv4() };
     this.repository.insert(entity);
     return entity;
+  }
+
+  @Put('/:id')
+  update(@Param('id') id: string, @Body() dto: UpdateEarningDto) {
+    return this.repository.update(id, dto);
   }
 }
