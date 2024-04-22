@@ -20,13 +20,6 @@ export class EarningController {
     return this.repository.getAll();
   }
 
-  @Post()
-  insert(@Body() dto: CreateEarningDto): EarningEntity {
-    const entity: EarningEntity = { ...dto, id: uuidv4() };
-    this.repository.insert(entity);
-    return entity;
-  }
-
   @Put('/:id')
   update(@Param('id') id: string, @Body() dto: UpdateEarningDto) {
     return this.repository.update(id, dto);
