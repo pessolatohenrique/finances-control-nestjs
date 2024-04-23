@@ -14,3 +14,7 @@ export class UpdateEarningDto {
   @MinLength(3)
   name: string;
 }
+
+export class ListEarningDto {
+  name: string;
+}

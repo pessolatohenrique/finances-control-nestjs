@@ -9,7 +9,7 @@ import {
 
 @Entity('earnings')
 export class EarningEntity {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
@@ -32,7 +32,6 @@ export class EarningEntity {
   @DeleteDateColumn({
     name: 'deletedAt',
     type: 'timestamp',
-    default: () => 'CURRENT_TIMESTAMP(6)',
   })
   deletedAt: Date;
 }

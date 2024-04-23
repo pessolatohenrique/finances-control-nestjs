@@ -8,25 +8,40 @@ import {
   Put,
 } from '@nestjs/common';
 import { EarningRepository } from './earning.repository';
-import { CreateEarningDto, UpdateEarningDto } from './earning.dto';
-import { EarningEntity } from './earning.entity';
-import { v4 as uuidv4 } from 'uuid';
+import {
+  CreateEarningDto,
+  ListEarningDto,
+  UpdateEarningDto,
+} from './earning.dto';
+import { EarningService } from './earning.service';
 
 @Controller('earning')
 export class EarningController {
-  constructor(private readonly repository: EarningRepository) { }
+  constructor(
+    private readonly repository: EarningRepository,
+    private readonly service: EarningService,
+  ) { }
+
   @Get()
-  getAll(): CreateEarningDto[] {
-    return this.repository.getAll();
+  getAll(): Promise<ListEarningDto[]> {
+    return this.service.getAll();
+  }
+
+  @Post()
+  async insert(@Body() dto: CreateEarningDto) {
+    await this.service.insert(dto);
+    return { message: 'Created with success' };
   }
 
   @Put('/:id')
-  update(@Param('id') id: string, @Body() dto: UpdateEarningDto) {
-    return this.repository.update(id, dto);
+  async update(@Param('id') id: string, @Body() dto: UpdateEarningDto) {
+    await this.service.update(id, dto);
+    return { message: 'Updated with success' };
   }
 
   @Delete('/:id')
-  delete(@Param('id') id: string) {
-    return this.repository.delete(id);
+  async delete(@Param('id') id: string) {
+    await this.service.delete(id);
+    return { message: 'Deleted with success' };
   }
 }
