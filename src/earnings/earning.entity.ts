@@ -3,9 +3,11 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { EarningToUserEntity } from './earning-user.entity';
 
 @Entity('earnings')
 export class EarningEntity {
@@ -14,6 +16,12 @@ export class EarningEntity {
 
   @Column()
   name: string;
+
+  @OneToMany(
+    () => EarningToUserEntity,
+    (earningToUser) => earningToUser.earning,
+  )
+  earningToUsers: EarningToUserEntity[];
 
   @CreateDateColumn({
     name: 'createdAt',

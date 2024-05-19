@@ -26,4 +26,13 @@ export class EarningService {
   async delete(id: string): Promise<void> {
     this.repository.delete(id);
   }
+
+  async getFromUser() {
+    return this.repository.find({
+      relations: {
+        earningToUsers: true,
+      },
+      where: { earningToUsers: { userId: process.env.FAKE_USER_ID } },
+    });
+  }
 }

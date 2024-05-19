@@ -44,4 +44,9 @@ export class EarningController {
     await this.service.delete(id);
     return { message: 'Deleted with success' };
   }
+
+  @Get('/user')
+  async getFromUser() {
+    return this.service.getFromUser();
+  }
 }
