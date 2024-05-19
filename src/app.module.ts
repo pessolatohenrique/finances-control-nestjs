@@ -3,6 +3,7 @@ import { EarningModule } from './earnings/earning.module';
 import { ConfigModule } from '@nestjs/config';
 import { MySqlConfigService } from './config/mysql-config.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { UserModule } from './users/user.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       inject: [MySqlConfigService],
     }),
     EarningModule,
+    UserModule,
   ],
   controllers: [],
   providers: [],
