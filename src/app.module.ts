@@ -4,6 +4,7 @@ import { ConfigModule } from '@nestjs/config';
 import { MySqlConfigService } from './config/mysql-config.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './users/user.module';
+import { RecipesModule } from './recipes/recipes.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { UserModule } from './users/user.module';
     }),
     EarningModule,
     UserModule,
+    RecipesModule,
   ],
   controllers: [],
   providers: [],
