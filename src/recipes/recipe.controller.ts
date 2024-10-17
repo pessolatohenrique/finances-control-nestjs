@@ -8,7 +8,12 @@ import {
   Put,
 } from '@nestjs/common';
 import { RecipeService } from './recipe.service';
-import { CreateRecipeDto, ListRecipeDto, UpdateRecipeDto } from './recipe.dto';
+import {
+  CreateRecipeCategoryDto,
+  CreateRecipeDto,
+  ListRecipeDto,
+  UpdateRecipeDto,
+} from './recipe.dto';
 
 @Controller('recipe')
 export class RecipeController {
@@ -35,5 +40,11 @@ export class RecipeController {
   async delete(@Param('id') id: string) {
     await this.service.delete(id);
     return { message: 'Deleted with success' };
+  }
+
+  @Post('/categories/associate')
+  async associateCategory(@Body() dto: CreateRecipeCategoryDto) {
+    await this.service.associateCategory(dto);
+    return { message: 'Categories associated with success' };
   }
 }

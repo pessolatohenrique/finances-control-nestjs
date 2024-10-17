@@ -1,4 +1,6 @@
 import { IsNotEmpty, IsOptional, MinLength } from 'class-validator';
+import { IsArray, IsInt, IsString, Min, ValidateNested } from 'class-validator';
+import { Type } from 'class-transformer';
 
 export class CreateRecipeDto {
   @IsNotEmpty()
@@ -15,4 +17,26 @@ export class UpdateRecipeDto {
 
 export class ListRecipeDto {
   name: string;
+}
+export class CategoryDto {
+  @IsNotEmpty()
+  @IsString()
+  name: string;
+
+  @IsNotEmpty()
+  @IsInt()
+  @Min(0)
+  percentage: number;
+}
+
+export class CreateRecipeCategoryDto {
+  @IsNotEmpty()
+  @IsString()
+  recipeId: string;
+
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => CategoryDto)
+  @IsNotEmpty({ each: true })
+  categories: CategoryDto[];
 }

@@ -3,9 +3,11 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { RecipeCategoryEntity } from './recipe-category.entity';
 
 @Entity('recipes')
 export class RecipeEntity {
@@ -14,6 +16,12 @@ export class RecipeEntity {
 
   @Column()
   name: string;
+
+  @OneToMany(
+    () => RecipeCategoryEntity,
+    (recipeToCategory) => recipeToCategory.recipe,
+  )
+  recipeToCategories: RecipeCategoryEntity[];
 
   @CreateDateColumn({
     name: 'createdAt',
