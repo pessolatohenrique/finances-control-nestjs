@@ -1,5 +1,6 @@
-import { IsNotEmpty, IsOptional, MinLength } from 'class-validator';
+import { IsNotEmpty, MinLength } from 'class-validator';
 import { IsEarningAlreadyRegistered } from './earning.validator';
+import { PartialType } from '@nestjs/mapped-types';
 
 export class CreateEarningDto {
   @IsNotEmpty()
@@ -8,12 +9,7 @@ export class CreateEarningDto {
   name: string;
 }
 
-export class UpdateEarningDto {
-  @IsOptional()
-  @IsNotEmpty()
-  @MinLength(3)
-  name: string;
-}
+export class UpdateEarningDto extends PartialType(CreateEarningDto) { }
 
 export class ListEarningDto {
   name: string;

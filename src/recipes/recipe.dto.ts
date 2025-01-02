@@ -1,6 +1,14 @@
-import { IsNotEmpty, IsOptional, MinLength } from 'class-validator';
-import { IsArray, IsInt, IsString, Min, ValidateNested } from 'class-validator';
+import {
+  IsArray,
+  IsInt,
+  IsString,
+  Min,
+  ValidateNested,
+  IsNotEmpty,
+  MinLength,
+} from 'class-validator';
 import { Type } from 'class-transformer';
+import { PartialType } from '@nestjs/mapped-types';
 
 export class CreateRecipeDto {
   @IsNotEmpty()
@@ -8,16 +16,12 @@ export class CreateRecipeDto {
   name: string;
 }
 
-export class UpdateRecipeDto {
-  @IsOptional()
-  @IsNotEmpty()
-  @MinLength(3)
-  name: string;
-}
+export class UpdateRecipeDto extends PartialType(CreateRecipeDto) { }
 
 export class ListRecipeDto {
   name: string;
 }
+
 export class CategoryDto {
   @IsNotEmpty()
   @IsString()
