@@ -8,6 +8,8 @@ import { RecipesModule } from './recipes/recipes.module';
 import { CategoriesModule } from './categories/categories.module';
 import { APP_FILTER } from '@nestjs/core';
 import { HttpExceptionFilter } from './filters/http-exception.filter';
+import { CacheModule, CacheStore } from '@nestjs/cache-manager';
+import { redisStore } from 'cache-manager-redis-yet';
 
 @Module({
   imports: [
@@ -15,6 +17,21 @@ import { HttpExceptionFilter } from './filters/http-exception.filter';
     TypeOrmModule.forRootAsync({
       useClass: MySqlConfigService,
       inject: [MySqlConfigService],
+    }),
+    CacheModule.registerAsync({
+      isGlobal: true,
+      useFactory: async () => {
+        const store = await redisStore({
+          socket: {
+            host: process.env.REDIS_HOST,
+            port: Number(process.env.REDIS_PORT),
+          },
+        });
+
+        return {
+          store: store as unknown as CacheStore,
+        };
+      },
     }),
     EarningModule,
     UserModule,

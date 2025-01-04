@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  UseInterceptors,
 } from '@nestjs/common';
 import { CategoryService } from './category.service';
 import {
@@ -13,12 +14,15 @@ import {
   ListCategoryDto,
   UpdateCategoryDto,
 } from './category.dto';
+import { CacheInterceptor, CacheTTL } from '@nestjs/cache-manager';
 
 @Controller('category')
 export class CategoryController {
   constructor(private readonly service: CategoryService) { }
 
   @Get()
+  @UseInterceptors(CacheInterceptor)
+  @CacheTTL(60 * 60000)
   getAll(): Promise<ListCategoryDto[]> {
     return this.service.getAll();
   }

@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  UseInterceptors,
 } from '@nestjs/common';
 import { RecipeService } from './recipe.service';
 import {
@@ -14,13 +15,17 @@ import {
   ListRecipeDto,
   UpdateRecipeDto,
 } from './recipe.dto';
+import { CacheInterceptor, CacheTTL } from '@nestjs/cache-manager';
 
 @Controller('recipe')
 export class RecipeController {
   constructor(private readonly service: RecipeService) { }
 
   @Get()
+  @UseInterceptors(CacheInterceptor)
+  @CacheTTL(60 * 60000)
   getAll(): Promise<ListRecipeDto[]> {
+    console.log('find recipe:!');
     return this.service.getAll();
   }
 
