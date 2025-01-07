@@ -14,4 +14,10 @@ export class UserService {
   async insert(dto: CreateUserDto): Promise<void> {
     await this.repository.insert(dto);
   }
+
+  async findByEmailOrUsername(key: string) {
+    return await this.repository.findOne({
+      where: [{ email: key }, { username: key }],
+    });
+  }
 }

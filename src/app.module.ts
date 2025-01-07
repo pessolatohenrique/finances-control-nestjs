@@ -10,6 +10,8 @@ import { APP_FILTER } from '@nestjs/core';
 import { HttpExceptionFilter } from './filters/http-exception.filter';
 import { CacheModule, CacheStore } from '@nestjs/cache-manager';
 import { redisStore } from 'cache-manager-redis-yet';
+import { AuthModule } from './auth/auth.module';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -17,6 +19,11 @@ import { redisStore } from 'cache-manager-redis-yet';
     TypeOrmModule.forRootAsync({
       useClass: MySqlConfigService,
       inject: [MySqlConfigService],
+    }),
+    JwtModule.register({
+      global: true,
+      secret: process.env.JWT_SECRET,
+      signOptions: { expiresIn: '60s' },
     }),
     CacheModule.registerAsync({
       isGlobal: true,
@@ -37,6 +44,7 @@ import { redisStore } from 'cache-manager-redis-yet';
     UserModule,
     RecipesModule,
     CategoriesModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [
