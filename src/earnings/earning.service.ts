@@ -27,12 +27,12 @@ export class EarningService {
     this.repository.delete(id);
   }
 
-  async getFromUser() {
+  async getFromUser(userId: string): Promise<EarningEntity[]> {
     return this.repository.find({
       relations: {
         earningToUsers: true,
       },
-      where: { earningToUsers: { userId: process.env.FAKE_USER_ID } },
+      where: { earningToUsers: { userId } },
     });
   }
 }

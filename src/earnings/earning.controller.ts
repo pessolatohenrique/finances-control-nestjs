@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import { EarningRepository } from './earning.repository';
@@ -15,7 +16,7 @@ import {
   UpdateEarningDto,
 } from './earning.dto';
 import { EarningService } from './earning.service';
-import { AuthGuard } from 'src/auth/auth.guard';
+import { AuthGuard, UserPayload } from 'src/auth/auth.guard';
 
 @Controller('earning')
 export class EarningController {
@@ -50,7 +51,7 @@ export class EarningController {
 
   @Get('/user')
   @UseGuards(AuthGuard)
-  async getFromUser() {
-    return this.service.getFromUser();
+  async getFromUser(@Req() req: { user: UserPayload }) {
+    return this.service.getFromUser(req.user.subId);
   }
 }
