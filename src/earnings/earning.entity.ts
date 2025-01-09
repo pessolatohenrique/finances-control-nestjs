@@ -8,6 +8,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { EarningToUserEntity } from './earning-user.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity('earnings')
 export class EarningEntity {
@@ -41,5 +42,6 @@ export class EarningEntity {
     name: 'deletedAt',
     type: 'timestamp',
   })
+  @Exclude()
   deletedAt: Date;
 }

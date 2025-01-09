@@ -1,5 +1,6 @@
 import {
   Body,
+  ClassSerializerInterceptor,
   Controller,
   Delete,
   Get,
@@ -8,6 +9,7 @@ import {
   Put,
   Req,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { EarningRepository } from './earning.repository';
 import {
@@ -51,6 +53,7 @@ export class EarningController {
 
   @Get('/user')
   @UseGuards(AuthGuard)
+  @UseInterceptors(ClassSerializerInterceptor)
   async getFromUser(@Req() req: { user: UserPayload }) {
     return this.service.getFromUser(req.user.subId);
   }
