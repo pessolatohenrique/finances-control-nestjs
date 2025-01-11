@@ -6,6 +6,7 @@ import {
   Entity,
   OneToMany,
   PrimaryGeneratedColumn,
+  Unique,
   UpdateDateColumn,
 } from 'typeorm';
 
@@ -15,9 +16,11 @@ export class UserEntity {
   id: string;
 
   @Column()
+  @Unique('unique_username', ['username'])
   username: string;
 
   @Column()
+  @Unique('unique_email', ['email'])
   email: string;
 
   @Column()
