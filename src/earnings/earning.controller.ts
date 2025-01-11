@@ -11,7 +11,6 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { EarningRepository } from './earning.repository';
 import {
   CreateEarningDto,
   ListEarningDto,
