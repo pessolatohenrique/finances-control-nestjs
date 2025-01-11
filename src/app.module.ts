@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { ConsoleLogger, Module } from '@nestjs/common';
 import { EarningModule } from './earnings/earning.module';
 import { ConfigModule } from '@nestjs/config';
 import { MySqlConfigService } from './config/mysql-config.service';
@@ -52,6 +52,7 @@ import { JwtModule } from '@nestjs/jwt';
       provide: APP_FILTER,
       useClass: HttpExceptionFilter,
     },
+    ConsoleLogger,
   ],
 })
 export class AppModule { }
