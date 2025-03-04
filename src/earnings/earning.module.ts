@@ -5,9 +5,10 @@ import { IsEarningAlreadyRegisteredConstraint } from './earning.validator';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { EarningEntity } from './earning.entity';
 import { EarningService } from './earning.service';
+import { EarningToUserEntity } from './earning-user.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([EarningEntity])],
+  imports: [TypeOrmModule.forFeature([EarningEntity, EarningToUserEntity])],
   controllers: [EarningController],
   providers: [
     EarningService,

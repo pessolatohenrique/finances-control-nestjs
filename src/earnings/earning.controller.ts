@@ -13,6 +13,7 @@ import {
 } from '@nestjs/common';
 import {
   CreateEarningDto,
+  CreateEarningUserListDto,
   ListEarningDto,
   UpdateEarningDto,
 } from './earning.dto';
@@ -50,10 +51,31 @@ export class EarningController {
     return { message: 'Deleted with success' };
   }
 
-  @Get('/user')
+  @Get('/personal')
   @UseGuards(AuthGuard)
   @UseInterceptors(ClassSerializerInterceptor)
   async getFromUser(@Req() req: { user: UserPayload }) {
     return this.service.getFromUser(req.user.subId);
+  }
+
+  @Post('/personal')
+  @UseGuards(AuthGuard)
+  @UseInterceptors(ClassSerializerInterceptor)
+  async insertFromUser(
+    @Req() req: { user: UserPayload },
+    @Body() dto: CreateEarningUserListDto,
+  ) {
+    await this.service.insertFromUser(req.user.subId, dto);
+    return { message: 'Created with success' };
+  }
+
+  @Get('/personal/:id')
+  @UseGuards(AuthGuard)
+  @UseInterceptors(ClassSerializerInterceptor)
+  async getOneFromUser(
+    @Req() req: { user: UserPayload },
+    @Param('id') id: string,
+  ) {
+    return this.service.getOneFromUser(req.user.subId, id);
   }
 }
