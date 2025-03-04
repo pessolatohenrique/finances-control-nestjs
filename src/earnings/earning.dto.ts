@@ -6,7 +6,7 @@ import {
   MinLength,
   ValidateNested,
 } from 'class-validator';
-import { PartialType } from '@nestjs/mapped-types';
+import { OmitType, PartialType } from '@nestjs/mapped-types';
 import { Type } from 'class-transformer';
 
 export class CreateEarningDto {
@@ -24,6 +24,10 @@ export class CreateEarningUserDto extends CreateEarningDto {
   @IsNotEmpty()
   transaction_date: string;
 }
+
+export class UpdateEarningUserDto extends OmitType(CreateEarningUserDto, [
+  'name',
+] as const) { }
 
 export class CreateEarningUserListDto {
   @IsArray()

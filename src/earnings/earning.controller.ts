@@ -16,6 +16,7 @@ import {
   CreateEarningUserListDto,
   ListEarningDto,
   UpdateEarningDto,
+  UpdateEarningUserDto,
 } from './earning.dto';
 import { EarningService } from './earning.service';
 import { AuthGuard, UserPayload } from 'src/auth/auth.guard';
@@ -77,5 +78,26 @@ export class EarningController {
     @Param('id') id: string,
   ) {
     return this.service.getOneFromUser(req.user.subId, id);
+  }
+
+  @Put('/personal/:id')
+  @UseGuards(AuthGuard)
+  async updateFromUser(
+    @Req() req: { user: UserPayload },
+    @Param('id') id: string,
+    @Body() dto: UpdateEarningUserDto,
+  ) {
+    await this.service.updateFromUser(req.user.subId, id, dto);
+    return { message: 'Updated with success' };
+  }
+
+  @Delete('/personal/:id')
+  @UseGuards(AuthGuard)
+  async deleteFromUser(
+    @Req() req: { user: UserPayload },
+    @Param('id') id: string,
+  ) {
+    await this.service.deleteFromUser(req.user.subId, id);
+    return { message: 'Deleted with success' };
   }
 }

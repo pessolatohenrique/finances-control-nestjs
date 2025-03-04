@@ -6,6 +6,7 @@ import {
   CreateEarningDto,
   CreateEarningUserListDto,
   UpdateEarningDto,
+  UpdateEarningUserDto,
 } from './earning.dto';
 import { EarningToUserEntity } from './earning-user.entity';
 
@@ -22,21 +23,6 @@ export class EarningService {
     return this.earningRepository.find();
   }
 
-  async getOneFromUser(userId: string, id: string): Promise<EarningEntity> {
-    const result = await this.earningRepository.findOne({
-      relations: {
-        earningToUsers: true,
-      },
-      where: { earningToUsers: { userId, id } },
-    });
-
-    if (!result) {
-      throw new NotFoundException('Result not found');
-    }
-
-    return { ...result, ...result.earningToUsers[0] };
-  }
-
   async insert(dto: CreateEarningDto): Promise<void> {
     this.earningRepository.insert(dto);
   }
@@ -46,7 +32,7 @@ export class EarningService {
   }
 
   async delete(id: string): Promise<void> {
-    this.earningRepository.delete(id);
+    this.earningRepository.softDelete(id);
   }
 
   async getFromUser(userId: string): Promise<EarningEntity[]> {
@@ -82,5 +68,42 @@ export class EarningService {
         transaction_date: earning.transaction_date,
       });
     }
+  }
+
+  async getOneFromUser(userId: string, id: string): Promise<EarningEntity> {
+    const result = await this.findOneByIdAndUser(userId, id);
+    return { ...result, ...result.earningToUsers[0] };
+  }
+
+  async updateFromUser(
+    userId: string,
+    id: string,
+    dto: UpdateEarningUserDto,
+  ): Promise<void> {
+    await this.findOneByIdAndUser(userId, id);
+
+    await this.earningUserRepository.update({ userId, id }, dto);
+  }
+
+  async deleteFromUser(userId: string, id: string): Promise<void> {
+    await this.earningUserRepository.softDelete({ userId, id });
+  }
+
+  private async findOneByIdAndUser(
+    userId: string,
+    id: string,
+  ): Promise<EarningEntity> {
+    const result = await this.earningRepository.findOne({
+      relations: {
+        earningToUsers: true,
+      },
+      where: { earningToUsers: { userId, id } },
+    });
+
+    if (!result) {
+      throw new NotFoundException('Result not found');
+    }
+
+    return result;
   }
 }

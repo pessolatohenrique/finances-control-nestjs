@@ -1,5 +1,13 @@
 import { UserEntity } from 'src/users/user.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { EarningEntity } from './earning.entity';
 import { Exclude } from 'class-transformer';
 
@@ -26,4 +34,24 @@ export class EarningToUserEntity {
 
   @ManyToOne(() => UserEntity, (user) => user.earningToUsers)
   user: UserEntity;
+
+  @CreateDateColumn({
+    name: 'createdAt',
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP(6)',
+  })
+  createdAt: Date;
+
+  @UpdateDateColumn({
+    name: 'updatedAt',
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP(6)',
+  })
+  updatedAt: Date;
+
+  @DeleteDateColumn({
+    name: 'deletedAt',
+    type: 'timestamp',
+  })
+  deletedAt: Date;
 }
