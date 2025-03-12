@@ -1,0 +1,22 @@
+import {
+  ClassSerializerInterceptor,
+  Controller,
+  Get,
+  Req,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
+import { AuthGuard, UserPayload } from 'src/auth/auth.guard';
+import { ExpenseService } from './expense.service';
+
+@Controller('expense')
+export class ExpenseController {
+  constructor(private readonly service: ExpenseService) { }
+
+  @Get('/personal')
+  @UseGuards(AuthGuard)
+  @UseInterceptors(ClassSerializerInterceptor)
+  async getFromUser(@Req() req: { user: UserPayload }) {
+    return this.service.getFromUser(req.user.subId);
+  }
+}
