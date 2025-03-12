@@ -1,4 +1,5 @@
 import { EarningToUserEntity } from 'src/earnings/earning-user.entity';
+import { ExpenseToUserEntity } from 'src/expenses/expense-user.entity';
 import {
   Column,
   CreateDateColumn,
@@ -31,6 +32,9 @@ export class UserEntity {
 
   @OneToMany(() => EarningToUserEntity, (earningToUser) => earningToUser.user)
   earningToUsers: EarningToUserEntity[];
+
+  @OneToMany(() => ExpenseToUserEntity, (expenseToUser) => expenseToUser.user)
+  expenseToUsers: ExpenseToUserEntity[];
 
   @CreateDateColumn({
     name: 'createdAt',

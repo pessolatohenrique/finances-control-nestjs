@@ -13,6 +13,7 @@ import { redisStore } from 'cache-manager-redis-yet';
 import { AuthModule } from './auth/auth.module';
 import { JwtModule } from '@nestjs/jwt';
 import { LoggingInterceptor } from './logging.interceptor';
+import { ExpenseModule } from './expenses/expense.module';
 
 @Module({
   imports: [
@@ -45,6 +46,7 @@ import { LoggingInterceptor } from './logging.interceptor';
     UserModule,
     RecipesModule,
     CategoriesModule,
+    ExpenseModule,
     AuthModule,
   ],
   controllers: [],

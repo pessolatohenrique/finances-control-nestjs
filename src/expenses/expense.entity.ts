@@ -1,6 +1,3 @@
-import { ExpenseToUserEntity } from 'src/expenses/expense-user.entity';
-import { ExpenseEntity } from 'src/expenses/expense.entity';
-import { RecipeCategoryEntity } from 'src/recipes/recipe-category.entity';
 import {
   Column,
   CreateDateColumn,
@@ -10,9 +7,11 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Exclude } from 'class-transformer';
+import { ExpenseToUserEntity } from './expense-user.entity';
 
-@Entity('categories')
-export class CategoryEntity {
+@Entity('expenses')
+export class ExpenseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -20,13 +19,10 @@ export class CategoryEntity {
   name: string;
 
   @OneToMany(
-    () => RecipeCategoryEntity,
-    (recipeToCategory) => recipeToCategory.category,
+    () => ExpenseToUserEntity,
+    (expenseToUser) => expenseToUser.expense,
   )
-  recipeToCategories: RecipeCategoryEntity[];
-
-  @OneToMany(() => ExpenseToUserEntity, (expense) => expense.category)
-  expenseToCategories: ExpenseToUserEntity[];
+  expenseToUsers: ExpenseToUserEntity[];
 
   @CreateDateColumn({
     name: 'createdAt',
@@ -46,5 +42,6 @@ export class CategoryEntity {
     name: 'deletedAt',
     type: 'timestamp',
   })
+  @Exclude()
   deletedAt: Date;
 }
