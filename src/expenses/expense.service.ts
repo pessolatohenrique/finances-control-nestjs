@@ -3,6 +3,7 @@ import { Repository } from 'typeorm';
 import { ExpenseEntity } from './expense.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ExpenseToUserEntity } from './expense-user.entity';
+import { CreateExpenseUserListDto } from './expense.dto';
 
 @Injectable()
 export class ExpenseService {
@@ -47,5 +48,32 @@ export class ExpenseService {
     }
 
     return result;
+  }
+
+  async insertFromUser(
+    userId: string,
+    dto: CreateExpenseUserListDto,
+  ): Promise<void> {
+    const { expenses } = dto;
+
+    for (const expense of expenses) {
+      let existingExpense = await this.expenseRepository.findOne({
+        where: { name: expense.name },
+      });
+
+      existingExpense = await this.expenseRepository.save({
+        ...existingExpense,
+        name: expense.name,
+      });
+
+      await this.expenseUserRepository.save({
+        ...expense,
+        userId,
+        categoryId: expense.categoryId,
+        expenseId: existingExpense.id,
+        value: expense.value,
+        transaction_date: expense.transaction_date,
+      });
+    }
   }
 }

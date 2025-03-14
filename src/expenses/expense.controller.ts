@@ -2,13 +2,15 @@ import {
   ClassSerializerInterceptor,
   Controller,
   Get,
+  Param,
   Req,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { AuthGuard, UserPayload } from 'src/auth/auth.guard';
 import { ExpenseService } from './expense.service';
-import { Param } from '@nestjs/common';
+import { Body, Post } from '@nestjs/common';
+import { CreateExpenseUserListDto } from './expense.dto';
 
 @Controller('expense')
 export class ExpenseController {
@@ -29,5 +31,16 @@ export class ExpenseController {
     @Param('id') id: string,
   ) {
     return this.service.getOneFromUser(req.user.subId, id);
+  }
+
+  @Post('/personal')
+  @UseGuards(AuthGuard)
+  @UseInterceptors(ClassSerializerInterceptor)
+  async insertFromUser(
+    @Req() req: { user: UserPayload },
+    @Body() dto: CreateExpenseUserListDto,
+  ) {
+    await this.service.insertFromUser(req.user.subId, dto);
+    return { message: 'Created with success' };
   }
 }
