@@ -8,6 +8,7 @@ import {
 } from '@nestjs/common';
 import { AuthGuard, UserPayload } from 'src/auth/auth.guard';
 import { ExpenseService } from './expense.service';
+import { Param } from '@nestjs/common';
 
 @Controller('expense')
 export class ExpenseController {
@@ -18,5 +19,15 @@ export class ExpenseController {
   @UseInterceptors(ClassSerializerInterceptor)
   async getFromUser(@Req() req: { user: UserPayload }) {
     return this.service.getFromUser(req.user.subId);
+  }
+
+  @Get('/personal/:id')
+  @UseGuards(AuthGuard)
+  @UseInterceptors(ClassSerializerInterceptor)
+  async getOneFromUser(
+    @Req() req: { user: UserPayload },
+    @Param('id') id: string,
+  ) {
+    return this.service.getOneFromUser(req.user.subId, id);
   }
 }
