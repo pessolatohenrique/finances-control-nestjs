@@ -3,7 +3,7 @@ import { Repository } from 'typeorm';
 import { ExpenseEntity } from './expense.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ExpenseToUserEntity } from './expense-user.entity';
-import { CreateExpenseUserListDto } from './expense.dto';
+import { CreateExpenseUserListDto, UpdateExpenseUserDto } from './expense.dto';
 
 @Injectable()
 export class ExpenseService {
@@ -29,6 +29,16 @@ export class ExpenseService {
     id: string,
   ): Promise<ExpenseToUserEntity> {
     return this.findOneByIdAndUser(userId, id);
+  }
+
+  async updateFromUser(
+    userId: string,
+    id: string,
+    dto: UpdateExpenseUserDto,
+  ): Promise<void> {
+    await this.findOneByIdAndUser(userId, id);
+
+    await this.expenseUserRepository.update({ user: { id: userId }, id }, dto);
   }
 
   private async findOneByIdAndUser(

@@ -1,3 +1,4 @@
+import { OmitType } from '@nestjs/mapped-types';
 import { Type } from 'class-transformer';
 import {
   IsArray,
@@ -36,3 +37,7 @@ export class CreateExpenseUserListDto {
   @IsNotEmpty({ each: true })
   expenses: CreateExpenseUserDto[];
 }
+
+export class UpdateExpenseUserDto extends OmitType(CreateExpenseUserDto, [
+  'name',
+] as const) { }

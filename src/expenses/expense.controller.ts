@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Param,
+  Put,
   Req,
   UseGuards,
   UseInterceptors,
@@ -10,7 +11,7 @@ import {
 import { AuthGuard, UserPayload } from 'src/auth/auth.guard';
 import { ExpenseService } from './expense.service';
 import { Body, Post } from '@nestjs/common';
-import { CreateExpenseUserListDto } from './expense.dto';
+import { CreateExpenseUserListDto, UpdateExpenseUserDto } from './expense.dto';
 
 @Controller('expense')
 export class ExpenseController {
@@ -42,5 +43,17 @@ export class ExpenseController {
   ) {
     await this.service.insertFromUser(req.user.subId, dto);
     return { message: 'Created with success' };
+  }
+
+  @Put('/personal/:id')
+  @UseGuards(AuthGuard)
+  @UseInterceptors(ClassSerializerInterceptor)
+  async updateFromUser(
+    @Req() req: { user: UserPayload },
+    @Param('id') id: string,
+    @Body() dto: UpdateExpenseUserDto,
+  ) {
+    await this.service.updateFromUser(req.user.subId, id, dto);
+    return { message: 'Updated with success' };
   }
 }
