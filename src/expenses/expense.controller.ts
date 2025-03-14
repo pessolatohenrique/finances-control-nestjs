@@ -1,6 +1,7 @@
 import {
   ClassSerializerInterceptor,
   Controller,
+  Delete,
   Get,
   Param,
   Put,
@@ -55,5 +56,16 @@ export class ExpenseController {
   ) {
     await this.service.updateFromUser(req.user.subId, id, dto);
     return { message: 'Updated with success' };
+  }
+
+  @Delete('/personal/:id')
+  @UseGuards(AuthGuard)
+  @UseInterceptors(ClassSerializerInterceptor)
+  async deleteFromUser(
+    @Req() req: { user: UserPayload },
+    @Param('id') id: string,
+  ) {
+    await this.service.deleteFromUser(req.user.subId, id);
+    return { message: 'Deleted with success' };
   }
 }

@@ -41,6 +41,10 @@ export class ExpenseService {
     await this.expenseUserRepository.update({ user: { id: userId }, id }, dto);
   }
 
+  async deleteFromUser(userId: string, id: string): Promise<void> {
+    await this.expenseUserRepository.softDelete({ user: { id: userId }, id });
+  }
+
   private async findOneByIdAndUser(
     userId: string,
     id: string,
