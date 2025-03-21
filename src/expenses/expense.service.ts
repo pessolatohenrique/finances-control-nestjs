@@ -1,9 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { Between, Repository } from 'typeorm';
 import { ExpenseEntity } from './expense.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ExpenseToUserEntity } from './expense-user.entity';
 import { CreateExpenseUserListDto, UpdateExpenseUserDto } from './expense.dto';
+import { SearchBudgetDTO } from 'src/budget/budget.dto';
 
 @Injectable()
 export class ExpenseService {
@@ -89,5 +90,23 @@ export class ExpenseService {
         transaction_date: expense.transaction_date,
       });
     }
+  }
+
+  async getFromUserByTransactionDate(
+    userId: string,
+    dto: SearchBudgetDTO,
+  ): Promise<ExpenseToUserEntity[]> {
+    const { initialDate, finalDate } = dto;
+
+    return this.expenseUserRepository.find({
+      relations: {
+        expense: true,
+        category: true,
+      },
+      where: {
+        user: { id: userId },
+        transaction_date: Between(new Date(initialDate), new Date(finalDate)),
+      },
+    });
   }
 }

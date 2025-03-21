@@ -10,10 +10,14 @@ import {
 import { AuthGuard, UserPayload } from 'src/auth/auth.guard';
 import { SearchBudgetDTO } from './budget.dto';
 import { EarningService } from 'src/earnings/earning.service';
+import { ExpenseService } from 'src/expenses/expense.service';
 
 @Controller('budget')
 export class BudgetController {
-  constructor(private readonly earningService: EarningService) { }
+  constructor(
+    private readonly earningService: EarningService,
+    private readonly expenseService: ExpenseService,
+  ) { }
 
   @Get('/personal')
   @UseGuards(AuthGuard)
@@ -26,6 +30,12 @@ export class BudgetController {
       req.user.subId,
       dto,
     );
-    return { earnings };
+
+    const expenses = await this.expenseService.getFromUserByTransactionDate(
+      req.user.subId,
+      dto,
+    );
+
+    return { earnings, expenses };
   }
 }
