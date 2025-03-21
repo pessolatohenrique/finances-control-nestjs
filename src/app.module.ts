@@ -14,6 +14,7 @@ import { AuthModule } from './auth/auth.module';
 import { JwtModule } from '@nestjs/jwt';
 import { LoggingInterceptor } from './logging.interceptor';
 import { ExpenseModule } from './expenses/expense.module';
+import { BudgetModule } from './budget/budget.module';
 
 @Module({
   imports: [
@@ -47,6 +48,7 @@ import { ExpenseModule } from './expenses/expense.module';
     RecipesModule,
     CategoriesModule,
     ExpenseModule,
+    BudgetModule,
     AuthModule,
   ],
   controllers: [],

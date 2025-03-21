@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { In, Repository } from 'typeorm';
+import { Between, In, Repository } from 'typeorm';
 import { EarningEntity } from './earning.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
@@ -9,6 +9,7 @@ import {
   UpdateEarningUserDto,
 } from './earning.dto';
 import { EarningToUserEntity } from './earning-user.entity';
+import { SearchBudgetDTO } from 'src/budget/budget.dto';
 
 @Injectable()
 export class EarningService {
@@ -105,5 +106,22 @@ export class EarningService {
     }
 
     return result;
+  }
+
+  async getFromUserByTransactionDate(
+    userId: string,
+    dto: SearchBudgetDTO,
+  ): Promise<EarningToUserEntity[]> {
+    const { initialDate, finalDate } = dto;
+
+    return this.earningUserRepository.find({
+      relations: {
+        earning: true,
+      },
+      where: {
+        userId,
+        transaction_date: Between(new Date(initialDate), new Date(finalDate)),
+      },
+    });
   }
 }
