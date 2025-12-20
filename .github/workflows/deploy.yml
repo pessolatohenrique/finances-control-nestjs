@@ -53,7 +53,6 @@ jobs:
   docker-build:
     runs-on: ubuntu-latest
     needs: [analyse]
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -67,3 +66,17 @@ jobs:
         run: |
           echo "Docker image built successfully!"
           docker run --rm finances-control-nestjs:latest node --version
+  notify:
+    runs-on: ubuntu-latest
+    needs: [docker-build]
+    steps:
+      - name: Notify success
+        run: echo "Deployment pipeline completed successfully!"
+  clean:
+    runs-on: ubuntu-latest
+    needs: [docker-build]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Clean up Docker images
+        run: docker rmi $(docker images -q)
