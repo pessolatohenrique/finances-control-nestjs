@@ -79,4 +79,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
       - name: Clean up Docker images
-        run: docker rmi $(docker images -q)
+        run: |
+          IMAGES=$(docker images -q)
+          if [ -n "$IMAGES" ]; then
+            docker rmi $IMAGES
+          else
+            echo "No Docker images to remove"
+          fi
