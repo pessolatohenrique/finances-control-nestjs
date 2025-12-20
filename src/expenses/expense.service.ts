@@ -109,4 +109,26 @@ export class ExpenseService {
       },
     });
   }
+
+  async sumFromUserByTransactionDate(
+    userId: string,
+    dto: SearchBudgetDTO,
+  ): Promise<number> {
+    const { initialDate, finalDate } = dto;
+
+    const result = await this.expenseUserRepository
+      .createQueryBuilder('expenseToUser')
+      .select('SUM(expenseToUser.value)', 'total')
+      .where('expenseToUser.userId = :userId', { userId })
+      .andWhere(
+        'expenseToUser.transaction_date BETWEEN :initialDate AND :finalDate',
+        {
+          initialDate: new Date(initialDate),
+          finalDate: new Date(finalDate),
+        },
+      )
+      .getRawOne();
+
+    return result.total || 0;
+  }
 }

@@ -26,6 +26,16 @@ export class BudgetController {
     @Req() req: { user: UserPayload },
     @Query() dto: SearchBudgetDTO,
   ) {
+    const sumEarning = await this.earningService.sumFromUserByTransactionDate(
+      req.user.subId,
+      dto,
+    );
+
+    const sumExpense = await this.expenseService.sumFromUserByTransactionDate(
+      req.user.subId,
+      dto,
+    );
+
     const earnings = await this.earningService.getFromUserByTransactionDate(
       req.user.subId,
       dto,
@@ -36,6 +46,6 @@ export class BudgetController {
       dto,
     );
 
-    return { earnings, expenses };
+    return { sumEarning, sumExpense, earnings, expenses };
   }
 }

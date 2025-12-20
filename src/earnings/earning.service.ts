@@ -124,4 +124,28 @@ export class EarningService {
       },
     });
   }
+
+  async sumFromUserByTransactionDate(
+    userId: string,
+    dto: SearchBudgetDTO,
+  ): Promise<number> {
+    const { initialDate, finalDate } = dto;
+
+    const result = await this.earningUserRepository
+      .createQueryBuilder('earningToUser')
+      .select('SUM(earningToUser.value)', 'total')
+      .where('earningToUser.userId = :userId', { userId })
+      .andWhere(
+        'earningToUser.transaction_date BETWEEN :initialDate AND :finalDate',
+        {
+          initialDate: new Date(initialDate),
+          finalDate: new Date(finalDate),
+        },
+      )
+      .getRawOne();
+
+    console.log(result);
+
+    return result.total || 0;
+  }
 }
