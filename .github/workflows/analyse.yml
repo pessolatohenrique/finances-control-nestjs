@@ -1,0 +1,20 @@
+name: Analyse code
+on:
+  workflow_call:
+
+jobs:
+  analyse:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 
+      - name: Download coverage report
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage/
+      - name: Run SonarCloud Scan
+        run: "echo SonarCloud analysis would run here checking ./coverage folder"
