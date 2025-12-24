@@ -17,6 +17,8 @@ jobs:
   docker_build:
     uses: ./.github/workflows/build-docker.yml
     needs: [analyse_code]
+    with:
+      image-name: 'finances-control-nestjs'
   notify_success:
     runs-on: ubuntu-latest
     needs: [docker_build]

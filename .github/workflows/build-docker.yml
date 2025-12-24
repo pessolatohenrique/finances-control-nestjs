@@ -2,7 +2,11 @@ name: Build docker
 
 on:
   workflow_call:
-
+    inputs:
+      image-name:
+        description: 'Name of the Docker image to build'
+        required: true
+        type: string
 jobs:
   build_docker:
     runs-on: ubuntu-latest
@@ -13,9 +17,9 @@ jobs:
         uses: docker/setup-buildx-action@v3
       - name: Build Docker image
         run: |
-          docker build -t finances-control-nestjs:latest .
-          docker images finances-control-nestjs:latest
+          docker build -t ${{ inputs.image-name }}:latest .
+          docker images ${{ inputs.image-name }}:latest
       - name: Test Docker image
         run: |
           echo "Docker image built successfully!"
-          docker run --rm finances-control-nestjs:latest node --version
+          docker run --rm ${{ inputs.image-name }}:latest node --version
