@@ -7,23 +7,26 @@ on:
     branches: [main]
 
 jobs:
-  build:
+  steps:
+    - name: Checkout repository &checkout-repo
+      uses: actions/checkout@v4
+  build_backend:
     uses: ./.github/workflows/build-backend.yml
-  analyse:
+  analyse_code:
     uses: ./.github/workflows/analyse.yml
-    needs: [build]
-  docker-build:
+    needs: [build_backend]
+  build_docker:
     uses: ./.github/workflows/build-docker.yml
     needs: [analyse]
-  notify:
+  notify_success:
     runs-on: ubuntu-latest
-    needs: [docker-build]
+    needs: [build_docker]
     steps:
       - name: Notify success
         run: echo "Deployment pipeline completed successfully!"
-  clean:
+  clean_project:
     runs-on: ubuntu-latest
-    needs: [docker-build]
+    needs: [build_docker]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
