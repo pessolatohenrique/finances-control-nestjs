@@ -6,6 +6,7 @@ on:
       node-versions:
         description: 'Node.js versions to test against'
         required: true
+        type: string
         default: '["20.x", "22.x"]'
 
 jobs:
