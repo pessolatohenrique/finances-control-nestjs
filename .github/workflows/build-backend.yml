@@ -2,6 +2,11 @@ name: Build backend
 
 on:
   workflow_call:
+    inputs:
+      node-versions:
+        description: 'Node.js versions to test against'
+        required: true
+        default: '["20.x", "22.x"]'
 
 jobs:
   build_backend:
@@ -10,7 +15,7 @@ jobs:
     # Supported versions: 20 and 22
     strategy:
       matrix:
-        node-version: [20.x, 22.x]
+        node-version: ${{ fromJson(inputs.node-versions) }}
 
     steps:
       - name: Checkout repository

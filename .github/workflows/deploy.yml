@@ -9,6 +9,8 @@ on:
 jobs:
   build_backend:
     uses: ./.github/workflows/build-backend.yml
+    with:
+      node-versions: '["20.x", "22.x"]'
   analyse_code:
     uses: ./.github/workflows/analyse.yml
     needs: [build_backend]
