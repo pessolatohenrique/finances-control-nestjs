@@ -8,7 +8,7 @@ on:
 
 jobs:
   steps:
-    - name: Checkout repository &checkout-repo
+    - name: Checkout repository
       uses: actions/checkout@v4
   build_backend:
     uses: ./.github/workflows/build-backend.yml
