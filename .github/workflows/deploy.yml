@@ -8,33 +8,31 @@ on:
 
 jobs:
   steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-  build_backend:
-    uses: ./.github/workflows/build-backend.yml
-  analyse_code:
-    uses: ./.github/workflows/analyse.yml
-    needs: [build_backend]
-  build_docker:
-    uses: ./.github/workflows/build-docker.yml
-    needs: [analyse]
-  notify_success:
-    runs-on: ubuntu-latest
-    needs: [build_docker]
-    steps:
-      - name: Notify success
-        run: echo "Deployment pipeline completed successfully!"
-  clean_project:
-    runs-on: ubuntu-latest
-    needs: [build_docker]
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Clean up Docker images
-        run: |
-          IMAGES=$(docker images -q)
-          if [ -n "$IMAGES" ]; then
-            docker rmi $IMAGES
-          else
-            echo "No Docker images to remove"
-          fi
+    build_backend:
+      uses: ./.github/workflows/build-backend.yml
+    analyse_code:
+      uses: ./.github/workflows/analyse.yml
+      needs: [build_backend]
+    build_docker:
+      uses: ./.github/workflows/build-docker.yml
+      needs: [analyse]
+    notify_success:
+      runs-on: ubuntu-latest
+      needs: [build_docker]
+      steps:
+        - name: Notify success
+          run: echo "Deployment pipeline completed successfully!"
+    clean_project:
+      runs-on: ubuntu-latest
+      needs: [build_docker]
+      steps:
+        - name: Checkout repository
+          uses: actions/checkout@v4
+        - name: Clean up Docker images
+          run: |
+            IMAGES=$(docker images -q)
+            if [ -n "$IMAGES" ]; then
+              docker rmi $IMAGES
+            else
+              echo "No Docker images to remove"
+            fi
