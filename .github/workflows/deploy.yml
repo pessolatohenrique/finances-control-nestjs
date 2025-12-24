@@ -8,12 +8,12 @@ on:
 
 jobs:
   build:
-    uses: ./.github/workflows/build/backend.yml
+    uses: ./.github/workflows/build-backend.yml
   analyse:
     uses: ./.github/workflows/analyse.yml
     needs: [build]
   docker-build:
-    uses: ./.github/workflows/build/docker.yml
+    uses: ./.github/workflows/build-docker.yml
     needs: [analyse]
   notify:
     runs-on: ubuntu-latest
