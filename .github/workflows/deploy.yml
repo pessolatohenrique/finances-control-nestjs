@@ -30,7 +30,7 @@ jobs:
     needs: [docker_build]
     steps:
       - name: Checkout repository
-        uses: ./.github/actions/checkout-repository
+        uses: actions/checkout@v4
       - name: Clean up Docker images
         run: |
           IMAGES=$(docker images -q)
