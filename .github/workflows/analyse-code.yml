@@ -8,7 +8,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: ./.github/actions/checkout-repository.yml
+        uses: ./.github/actions/checkout-repository
         with:
           fetch-depth: 0
       - name: Download coverage report
