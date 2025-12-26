@@ -12,7 +12,7 @@ jobs:
     with:
       node-versions: '["20.x", "22.x"]'
   analyse_code:
-    uses: ./.github/workflows/analyse.yml
+    uses: ./.github/workflows/analyse-code.yml
     needs: [build_backend]
   docker_build:
     uses: ./.github/workflows/build-docker.yml
