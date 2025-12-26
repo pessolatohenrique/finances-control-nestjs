@@ -2,6 +2,7 @@ name: Build docker
 
 env:
   NODE_ENV: production
+  API_KEY: ${{ secrets.API_KEY }}
 
 on:
   workflow_call:
@@ -24,5 +25,5 @@ jobs:
           docker images ${{ inputs.image-name }}:latest
       - name: Test Docker image
         run: |
-          echo "Docker image built successfully. Environment: ${{ env.NODE_ENV}}!"
+          echo "Docker image built successfully. Environment: ${{ env.NODE_ENV}} with Api Key: ${{ env.API_KEY }}!"
           docker run --rm ${{ inputs.image-name }}:latest node --version
