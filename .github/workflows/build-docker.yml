@@ -24,5 +24,5 @@ jobs:
           docker images ${{ inputs.image-name }}:latest
       - name: Test Docker image
         run: |
-          echo "Docker image built successfully. Environment: ${{ env.NODE_ENV}} with Api Key: ${{ inputs.api-key }}!"
+          echo "Docker image built successfully. Environment: ${{ env.NODE_ENV }} with Api Key: ${{ inputs.api-key }}!"
           docker run --rm ${{ inputs.image-name }}:latest node --version
